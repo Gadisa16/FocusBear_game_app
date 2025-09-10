@@ -1,9 +1,9 @@
-import { setShowOnboarding, toggleSound, reset, goToScreen } from '@/features/game/gameSlice'
+import { goToScreen, reset, toggleSound } from '@/features/game/gameSlice'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import type { RootState } from '@/store'
 import type { PropsWithChildren } from 'react'
+import { Tooltip } from 'react-tooltip'
 import Bear from './Bear'
-import { Tooltip } from 'react-tooltip';
 
 interface Props {
   title: string
@@ -28,9 +28,12 @@ export default function ScreenShell({ title, subtitle, mood = 'normal', children
             aria-label="Back to goal input"
             onClick={handleBearClick}
             style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
-            title="Back to start"
+            // title="Back to start"
+            data-tooltip-id="app_logo_placeholder"
+            data-tooltip-content="Back to start"
           >
             <Bear size={40} mood={mood} />
+            <Tooltip id="app_logo_placeholder" place="right" />
           </button>
           <div>
             <h1 className="text-xl font-bold text-bear-fur">{title}</h1>
