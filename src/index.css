@@ -12,12 +12,72 @@ html, body, #root {
 
 /* Sticky note look */
 .card-sticky {
-  @apply bg-yellow-100 shadow-sticky rounded-xl p-3 border border-yellow-200;
+  @apply bg-yellow-100 shadow-sticky pt-2 pb-1 px-3 border border-yellow-200;
+  position: relative;
+}
+
+/* Folded corner effect using pseudo-element */
+.card-sticky::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 24px 24px 0;
+  /* Size of the fold; adjust as needed */
+  border-color: transparent #f0f0f0 transparent transparent;
+  /* #f0f0f0 for a subtle fold color; match to a lighter shade of background */
+  box-shadow: -1px 1px 2px rgba(0, 0, 0, 0.1);
+  /* Shadow to simulate depth/fold crease */
+  transform: rotate(0deg);
+  /* Optional: slight rotation if you want a more dynamic fold */
+}
+
+.card-sticky:hover {
+  transform: rotate(var(--tilt, 0deg)) translateY(-2px);
 }
 
 /* Bear speech bubble */
 .bear-bubble {
   @apply bg-white border border-bear-furLight rounded-2xl p-3 shadow;
+  position: relative;
+}
+
+/* Left-facing bubble tail pointing to the bear */
+.bear-bubble::after {
+  content: '';
+  position: absolute;
+  left: -10px;
+  top: 18px;
+  width: 0;
+  height: 0;
+  border-right: 10px solid #ffffff; /* bubble background */
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  filter: drop-shadow(0 0 0 rgba(0,0,0,0.0));
+}
+
+/* Polished inline action button for the bubble */
+.bear-bubble .action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(156, 122, 92, 0.35); /* bear-furLight/35 */
+  background: rgba(230, 243, 255, 0.6); /* bear-sky/60 */
+  color: #6B4F3A; /* bear-fur */
+  font-size: 0.75rem; /* text-xs */
+  line-height: 1rem;
+}
+.bear-bubble .action-btn:hover {
+  background: rgba(230, 243, 255, 0.85);
+}
+.bear-bubble .action-btn:focus {
+  outline: 2px solid rgba(42, 157, 143, 0.5); /* bear-leaf */
+  outline-offset: 2px;
 }
 
 /* Bear animations */
@@ -214,4 +274,9 @@ html, body, #root {
 
 .bear-bucket.dropped {
   animation: bucket-pop 200ms ease;
+}
+
+.card_grid_style {
+  margin: 0 auto;
+  width: 90%;
 }

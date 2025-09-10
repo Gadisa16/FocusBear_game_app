@@ -43,7 +43,7 @@ export default function Bucket({ label, onDropTask, shake }: Props) {
 
   return (
     <section
-      className={`bear-bucket relative w-[150px] h-[150px] bg-transparent rounded-full p-3 pt-6 flex items-center justify-center text-[#6B4F3A] font-semibold ${shake ? 'animate-shake' : ''} border-4 border-dashed transition-transform transition-shadow transition-bg duration-200 ease-in-out`}
+      className={`bear-bucket relative w-[150px] h-[150px] bg-transparent rounded-full p-3 pt-6 flex items-center justify-center text-[#6B4F3A] font-semibold ${shake ? 'animate-shake' : ''} border-4 border-dashed transition-transform transition-shadow transition-bg duration-200 ease-in-out cursor-pointer`}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       onDrop={(e) => { e.currentTarget.classList.remove('is-over'); onDrop(e) }}

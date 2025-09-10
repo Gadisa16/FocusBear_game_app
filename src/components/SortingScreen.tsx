@@ -45,16 +45,25 @@ export default function SortingScreen() {
         <div className="flex items-start justify-center gap-3">
           <Bear size={56} mood={mood} />
           <BearBubble>
-            {lastMessage || (showOnboarding
-              ? 'Welcome! Drag sticky notes into buckets. Or, focus a note to reveal quick-send buttons.'
-              : 'Tip: Now = urgent + important. Later = important. Never = distraction.')}
-            {showOnboarding && (
-              <button className="ml-2 text-xs underline" onClick={() => dispatch(setShowOnboarding(false))}>Got it</button>
-            )}
+            <div className="flex items-center flex-wrap gap-2">
+              <span>
+                {lastMessage || (showOnboarding
+                  ? 'Welcome! Drag sticky notes into buckets. Or, focus a note to reveal quick-send buttons.'
+                  : 'Tip: Now = urgent + important. Later = important. Never = distraction.')}
+              </span>
+              {showOnboarding && (
+                <button
+                  className="action-btn"
+                  onClick={() => dispatch(setShowOnboarding(false))}
+                >
+                  Got it
+                </button>
+              )}
+            </div>
           </BearBubble>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 card_grid_style">
           {tasks.map((t: Task) => (
             <TaskCard
               key={t.id}
