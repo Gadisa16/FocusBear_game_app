@@ -16,7 +16,7 @@ export default function ResultsScreen() {
         <div className="text-bear-furLight">Score: {score}%</div>
         <div className="grid gap-3">
           <button onClick={() => dispatch(goToScreen('start'))} className="bg-bear-honey text-bear-fur font-semibold py-3 rounded-xl shadow hover:opacity-90">Set New Goal</button>
-          <button onClick={() => dispatch(reset())} className="text-bear-furLight underline">Restart</button>
+          {/* <button onClick={() => dispatch(reset())} className="text-bear-furLight underline">Restart</button> */}
         </div>
         {/* <div className="text-xs text-bear-furLight border rounded-xl p-3 bg-white">
           Placeholder for screenshot or short tips.

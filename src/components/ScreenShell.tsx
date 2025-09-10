@@ -1,4 +1,4 @@
-import { setShowOnboarding, toggleSound } from '@/features/game/gameSlice'
+import { setShowOnboarding, toggleSound, reset, goToScreen } from '@/features/game/gameSlice'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import type { RootState } from '@/store'
 import type { PropsWithChildren } from 'react'
@@ -15,12 +15,23 @@ export default function ScreenShell({ title, subtitle, mood = 'normal', children
   const game = useAppSelector((state: RootState) => state.game)
   const soundEnabled = game.soundEnabled
   const dispatch = useAppDispatch()
+  const handleBearClick = () => {
+    dispatch(reset())
+    dispatch(goToScreen('start'))
+  }
   return (
     <div className="min-h-full flex flex-col">
       <header
         className="p-4 flex items-center gap-3 justify-between bg-headerStyle">
         <div className="flex items-center gap-3">
-          <Bear size={40} mood={mood} />
+          <button
+            aria-label="Back to goal input"
+            onClick={handleBearClick}
+            style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+            title="Back to start"
+          >
+            <Bear size={40} mood={mood} />
+          </button>
           <div>
             <h1 className="text-xl font-bold text-bear-fur">{title}</h1>
             {subtitle && <p className="text-sm text-bear-furLight">{subtitle}</p>}
