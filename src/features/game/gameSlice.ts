@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { generateTasksFromGoal } from '@/utils/tasks'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export type Bucket = 'Now' | 'Later' | 'Never'
 

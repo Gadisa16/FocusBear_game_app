@@ -1,8 +1,8 @@
-import { describe, it, expect } from 'vitest'
-import { Provider } from 'react-redux'
-import { render, screen } from '@testing-library/react'
-import { store } from '@/store'
 import StartScreen from '@/components/StartScreen'
+import { store } from '@/store'
+import { render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
+import { describe, expect, it } from 'vitest'
 
 describe('StartScreen', () => {
   it('renders and has a button', () => {

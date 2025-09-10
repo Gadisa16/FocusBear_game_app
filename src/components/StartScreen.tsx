@@ -1,4 +1,4 @@
-import { goToScreen, setGoal, generateTasks } from '@/features/game/gameSlice'
+import { generateTasks, goToScreen, setGoal } from '@/features/game/gameSlice'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import type { RootState } from '@/store'
 import { useState } from 'react'
@@ -6,7 +6,7 @@ import Bear from './Bear'
 import ScreenShell from './ScreenShell'
 
 export default function StartScreen() {
-  const [goal, setGoalInput]: [string, React.Dispatch<React.SetStateAction<string>>] = useState<string>('')
+  const [goal, setGoalInput] = useState<string>('')
   const dispatch = useAppDispatch()
     const game = useAppSelector((s: RootState) => s.game)
     const loading = game.loading

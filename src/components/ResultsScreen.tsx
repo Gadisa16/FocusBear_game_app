@@ -9,9 +9,9 @@ export default function ResultsScreen() {
   const score = Math.round((correctCount / Math.max(1, tasks.length)) * 100)
 
   return (
-    <ScreenShell title="Results" subtitle="Great focus!">
+  <ScreenShell title="Results" subtitle="Great focus!" mood="happy">
       <div className="max-w-md mx-auto grid gap-6 text-center">
-        <div className="flex justify-center"><Bear /></div>
+  <div className="flex justify-center"><Bear mood="happy" /></div>
         <div className="text-4xl font-extrabold text-bear-fur">{correctCount}/{tasks.length} correct</div>
         <div className="text-bear-furLight">Score: {score}%</div>
         <div className="grid gap-3">

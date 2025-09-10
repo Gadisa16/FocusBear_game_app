@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest'
 import reducer, { dropTask, setTasks, type Task } from '@/features/game/gameSlice'
+import { describe, expect, it } from 'vitest'
 
 function makeTasks(): Task[] {
   return [

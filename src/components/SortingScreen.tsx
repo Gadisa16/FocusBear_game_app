@@ -1,11 +1,11 @@
+import type { Bucket as BucketType, Task } from '@/features/game/gameSlice'
 import { dropTask, setShowOnboarding } from '@/features/game/gameSlice'
 import { useAppDispatch, useAppSelector } from '@/hooks'
+import type { RootState } from '@/store'
 import { burstConfetti } from '@/utils/confetti'
 import { playCorrect, playWrong } from '@/utils/sound'
 import { BUCKETS } from '@/utils/tasks'
-import type { Bucket as BucketType, Task } from '@/features/game/gameSlice'
 import { useState } from 'react'
-import type { RootState } from '@/store'
 import Bear from './Bear'
 import BearBubble from './bear/BearBubble'
 import ScreenShell from './ScreenShell'
@@ -17,6 +17,7 @@ export default function SortingScreen() {
   const { tasks, lastMessage, soundEnabled, showOnboarding } = game
   const dispatch = useAppDispatch()
   const [poof, setPoof] = useState<string | null>(null)
+  const [mood, setMood] = useState<'normal'|'happy'|'sad'>('normal')
   const [shake, setShake] = useState<BucketType | null>(null)
 
   const onDropTo = (taskId: string, bucket: BucketType) => {
@@ -26,21 +27,23 @@ export default function SortingScreen() {
     if (t.correctBucket === bucket) {
       burstConfetti()
       if (soundEnabled) playCorrect()
-    } else {
+      setMood('happy')
+  } else {
       setPoof(taskId)
       setShake(bucket)
       if (soundEnabled) playWrong()
       setTimeout(() => setPoof(null), 350)
       setTimeout(() => setShake(null), 350)
+      setMood('sad')
     }
   }
 
   return (
-    <ScreenShell title="Sort Tasks" subtitle="Drag sticky notes into buckets">
+  <ScreenShell title="Sort Tasks" subtitle="Drag sticky notes into buckets" mood={mood}>
       <div className="grid gap-4 sm:gap-6">
         <div className="sr-only" aria-live="polite">{lastMessage || ''}</div>
-        <div className="flex items-start gap-3">
-          <Bear size={56} />
+        <div className="flex items-start justify-center gap-3">
+          <Bear size={56} mood={mood} />
           <BearBubble>
             {lastMessage || (showOnboarding
               ? 'Welcome! Drag sticky notes into buckets. Or, focus a note to reveal quick-send buttons.'
