@@ -36,12 +36,12 @@ export default function ScreenShell({ title, subtitle, mood = 'normal', children
           >{soundEnabled ? '🔊' : '🔈'}
           <Tooltip id="sound-tooltip" place="left" />
           </button>
-          <button
+          {/* <button
             aria-label="Help"
             onClick={() => dispatch(setShowOnboarding(true))}
             className="px-3 py-2 rounded-lg border bg-white text-bear-fur hover:bg-bear-sky"
             title="Show help"
-          >?</button>
+          >?</button> */}
         </div>
       </header>
       <main className="flex-1 p-4">{children}</main>

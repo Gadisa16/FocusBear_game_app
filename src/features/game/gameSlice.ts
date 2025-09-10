@@ -1,5 +1,7 @@
-import { generateTasksFromGoal } from '@/utils/tasks'
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { generateTasksWithGroq } from '@/utils/ai';
+import { generateTasksFromGoal } from '@/utils/tasks';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { toast } from 'react-hot-toast';
 
 export type Bucket = 'Now' | 'Later' | 'Never'
 
@@ -105,11 +107,21 @@ const gameSlice = createSlice({
 
 function pick<T>(arr: T[]): T { return arr[Math.floor(Math.random() * arr.length)] }
 
-export const generateTasks = createAsyncThunk('game/generateTasks', async (goal: string) => {
-  // Placeholder for real AI call; simulate latency
-  await new Promise(res => setTimeout(res, 500))
-  return generateTasksFromGoal(goal)
-})
+export const generateTasks = createAsyncThunk(
+  'game/generateTasks',
+  async (goal: string, { signal }) => {
+    try {
+      return await generateTasksWithGroq(goal, { signal })
+    } catch (err: any) {
+      if (err?.name === 'AbortError') throw err
+      console.warn('AI generation failed, falling back:', err?.message || err)
+      toast.error('Task generation failed, using placeholders.', { duration: 4000 })
+    }
+    // Fallback to local placeholder
+    await new Promise((res) => setTimeout(res, 400))
+    return generateTasksFromGoal(goal)
+  }
+)
 
 export const { setGoal, setTasks, goToScreen, dropTask, reset, toggleSound, setShowOnboarding } = gameSlice.actions
 export default gameSlice.reducer
