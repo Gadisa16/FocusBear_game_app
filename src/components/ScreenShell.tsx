@@ -17,9 +17,7 @@ export default function ScreenShell({ title, subtitle, mood = 'normal', children
   return (
     <div className="min-h-full flex flex-col">
       <header
-        className="p-4 flex items-center gap-3 justify-between"
-        style={{ background: 'rgba(0, 0, 0, 0.16)' }}
-      >
+        className="p-4 flex items-center gap-3 justify-between bg-headerStyle">
         <div className="flex items-center gap-3">
           <Bear size={40} mood={mood} />
           <div>

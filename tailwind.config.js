@@ -38,6 +38,10 @@ export default {
       animation: {
         shake: 'shake 300ms ease-in-out',
         poof: 'poof 300ms ease-in',
+      },
+      backgroundImage: {
+        headerStyle: 'linear-gradient(to top, rgba(0, 0, 0, 0.07), rgba(0, 0, 0, 0.01))',
+        footerStyle: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.07), rgba(0, 0, 0, 0.01))'
       }
     }
   },

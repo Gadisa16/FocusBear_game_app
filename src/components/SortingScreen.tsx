@@ -65,7 +65,7 @@ export default function SortingScreen() {
           ))}
         </div>
 
-        <div className="sticky bottom-0 bg-bear-sky/80 backdrop-blur supports-[backdrop-filter]:bg-bear-sky/60 border-t">
+        <div className="sticky bottom-0 bg-bear-sky/80 backdrop-blur supports-[backdrop-filter]:bg-bear-sky/60 border-t bg-footerStyle ">
           <div className="max-w-5xl mx-auto grid grid-cols-3 gap-3 p-3">
             {BUCKETS.map((b) => (
               <BucketZone key={b} label={b} shake={shake === b} onDropTask={(id: string) => onDropTo(id, b)} />
