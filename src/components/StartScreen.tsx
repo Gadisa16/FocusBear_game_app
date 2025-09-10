@@ -25,22 +25,35 @@ export default function StartScreen() {
           <Bear />
           <div className="bear-bubble">What is your main goal today?</div>
         </div>
-        <label className="block">
-          <span className="sr-only">Main goal</span>
-          <input
-            value={goal}
-            onChange={(e) => setGoalInput(e.target.value)}
-            placeholder="e.g., Finish microeconomics assignment"
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            if (!loading) start()
+          }}
+          className="contents"
+        >
+          <label className="block">
+            <span className="sr-only">Main goal</span>
+            <input
+              value={goal}
+              onChange={(e) => setGoalInput(e.target.value)}
+              placeholder="e.g., Finish microeconomics assignment"
               className="w-full rounded-xl border border-bear-furLight px-4 py-3 text-bear-fur focus:outline-none focus:ring-2 focus:ring-bear-honey bg-white disabled:opacity-50"
               disabled={loading}
-          />
-        </label>
-          <button onClick={start} disabled={loading} className="w-full bg-bear-honey text-bear-fur font-semibold py-3 rounded-xl shadow hover:opacity-90 active:opacity-80 disabled:opacity-60">
+              required
+            />
+          </label>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-bear-honey text-bear-fur font-semibold py-3 rounded-xl shadow hover:opacity-90 active:opacity-80 disabled:opacity-60"
+          >
             {loading ? 'Generating…' : 'Generate Tasks'}
-        </button>
-        <div className="text-xs text-bear-furLight border rounded-xl p-3 bg-white">
+          </button>
+        </form>
+        {/* <div className="text-xs text-bear-furLight border rounded-xl p-3 bg-white">
           Placeholder: Add a quick screenshot or 1-2 step instructions here.
-        </div>
+        </div> */}
       </div>
     </ScreenShell>
   )

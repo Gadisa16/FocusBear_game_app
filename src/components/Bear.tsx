@@ -7,7 +7,7 @@ export default function Bear({ size = 80, mood = 'normal' }: Props) {
   if (mood === 'sad') mouthClass = 'w-[60px] top-[110px] left-[45px] border-black border-solid'
 
   return (
-    <div className="relative" style={{ width: size, height: size }} aria-label={`FocusBear mascot ${mood}`}>
+    <div className="relative bears_general" style={{ width: size, height: size }} aria-label={`FocusBear mascot ${mood}`}>
       <div
         className={`bear ${mood} relative w-[150px] h-[150px] bg-[#c68c53] rounded-full`}
         style={{ transform: `scale(${scale})`, transformOrigin: 'top left' }}

@@ -1,7 +1,8 @@
 import { Bucket, Task } from '@/features/game/gameSlice';
 import type { DragEvent } from 'react';
 
-type Props = { task: Task; poof?: boolean; onSendTo?: (bucket: Bucket) => void }
+type Props = Readonly<{ task: Task; poof?: boolean; onSendTo?: (bucket: Bucket) => void }>;
+
 export default function TaskCard({ task, poof, onSendTo }: Props) {
   const draggable = !task.sortedBucket
   const onDragStart = (e: DragEvent<HTMLButtonElement>) => {
