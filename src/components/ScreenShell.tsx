@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks'
 import type { RootState } from '@/store'
 import type { PropsWithChildren } from 'react'
 import Bear from './Bear'
+import { Tooltip } from 'react-tooltip';
 
 interface Props {
   title: string
@@ -30,8 +31,11 @@ export default function ScreenShell({ title, subtitle, mood = 'normal', children
             aria-label={soundEnabled ? 'Mute sounds' : 'Unmute sounds'}
             onClick={() => dispatch(toggleSound())}
             className="px-3 py-2 rounded-lg border bg-white text-bear-fur hover:bg-bear-sky"
-            title="Toggle sound"
-          >{soundEnabled ? '🔊' : '🔈'}</button>
+            data-tooltip-id="sound-tooltip"
+            data-tooltip-content="toggle sound!"
+          >{soundEnabled ? '🔊' : '🔈'}
+          <Tooltip id="sound-tooltip" place="left" />
+          </button>
           <button
             aria-label="Help"
             onClick={() => dispatch(setShowOnboarding(true))}
