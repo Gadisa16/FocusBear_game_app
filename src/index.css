@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+/* Sticky note look */
+.card-sticky {
+  @apply bg-yellow-100 shadow-sticky rounded-xl p-4 border border-yellow-200;
+}
+
+/* Bear speech bubble */
+.bear-bubble {
+  @apply bg-white border border-bear-furLight rounded-2xl p-3 shadow;
+}
