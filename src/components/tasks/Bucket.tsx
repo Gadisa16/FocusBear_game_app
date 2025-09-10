@@ -43,7 +43,7 @@ export default function Bucket({ label, onDropTask, shake }: Props) {
 
   return (
     <section
-      className={`bear-bucket relative w-[150px] h-[150px] bg-transparent rounded-full p-3 pt-6 flex items-center justify-center text-[#6B4F3A] font-semibold ${shake ? 'animate-shake' : ''} border-4 border-dashed transition-transform transition-shadow transition-bg duration-200 ease-in-out cursor-pointer`}
+      className={`bear-bucket relative w-[90px] h-[90px] sm:w-[150px] sm:h-[150px] bg-transparent rounded-full p-3 pt-6 flex items-center justify-center text-[#6B4F3A] font-semibold ${shake ? 'animate-shake' : ''} border-4 border-dashed transition-transform transition-shadow transition-bg duration-200 ease-in-out cursor-pointer`}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       onDrop={(e) => { e.currentTarget.classList.remove('is-over'); onDrop(e) }}
@@ -54,14 +54,33 @@ export default function Bucket({ label, onDropTask, shake }: Props) {
       style={{ ['--bucket-border' as any]: borderColor, borderColor } as React.CSSProperties}
     >
       {/* Minimalist "broken line" ears (outline only) */}
-      <div className="ear left absolute w-7 h-7 rounded-full -top-[14px] left-4 border-2 border-dashed border-[var(--bucket-border)] bg-transparent opacity-70" aria-hidden />
-      <div className="ear right absolute w-7 h-7 rounded-full -top-[14px] right-4 border-2 border-dashed border-[var(--bucket-border)] bg-transparent opacity-70" aria-hidden />
 
-      {/* Neutral/calm face (no happy/sad). Keep subtle blink, outline-only features. */}
-      <div className="eye left-eye absolute w-3 h-3 rounded-full top-[56px] left-[46px] border-2 border-[var(--bucket-border)] bg-transparent animate-blink opacity-70" />
-      <div className="eye right-eye absolute w-3 h-3 rounded-full top-[56px] right-[46px] border-2 border-[var(--bucket-border)] bg-transparent animate-blink opacity-70" />
-      <div className="nose absolute w-3 h-3 rounded-full top-[78px] left-1/2 -translate-x-1/2 border-2 border-[var(--bucket-border)] bg-transparent opacity-60" />
-      <div className="mouth absolute w-10 h-0 top-[102px] left-1/2 -translate-x-1/2 border-t-2 border-[var(--bucket-border)] opacity-70" />
+      {/* Responsive facial features for mobile/desktop */}
+      {/* Ears */}
+      <div className="ear left absolute rounded-full border-2 border-dashed border-[var(--bucket-border)] bg-transparent opacity-70
+        w-4 h-4 -top-2 left-1
+        sm:w-7 sm:h-7 sm:-top-[14px] sm:left-4" aria-hidden />
+      <div className="ear right absolute rounded-full border-2 border-dashed border-[var(--bucket-border)] bg-transparent opacity-70
+        w-4 h-4 -top-2 right-1
+        sm:w-7 sm:h-7 sm:-top-[14px] sm:right-4" aria-hidden />
+
+      {/* Eyes */}
+      <div className="eye left-eye absolute rounded-full border-2 border-[var(--bucket-border)] bg-transparent animate-blink opacity-70
+        w-2 h-2 top-[28px] left-[18px]
+        sm:w-3 sm:h-3 sm:top-[56px] sm:left-[46px]" />
+      <div className="eye right-eye absolute rounded-full border-2 border-[var(--bucket-border)] bg-transparent animate-blink opacity-70
+        w-2 h-2 top-[28px] right-[18px]
+        sm:w-3 sm:h-3 sm:top-[56px] sm:right-[46px]" />
+
+      {/* Nose */}
+      <div className="nose absolute rounded-full border-2 border-[var(--bucket-border)] bg-transparent opacity-60
+        w-2 h-2 top-[38px] left-1/2 -translate-x-1/2
+        sm:w-3 sm:h-3 sm:top-[78px]" />
+
+      {/* Mouth */}
+      <div className="mouth absolute h-0 left-1/2 -translate-x-1/2 border-t-2 border-[var(--bucket-border)] opacity-70
+        w-6 top-[48px]
+        sm:w-10 sm:top-[102px]" />
 
       {/* Label only; description moved to tooltip */}
       <span className="label absolute bottom-2 text-lg font-bold text-center">{label}</span>

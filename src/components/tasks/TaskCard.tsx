@@ -1,21 +1,41 @@
+// Add a global property for touch drag state
+declare global {
+  interface Window {
+    __focusbear_dragging?: string;
+  }
+}
 import { Bucket, Task } from '@/features/game/gameSlice';
-import type { DragEvent } from 'react';
+import type { DragEvent, TouchEvent } from 'react';
 
 type Props = Readonly<{ task: Task; poof?: boolean; onSendTo?: (bucket: Bucket) => void }>;
 
 export default function TaskCard({ task, poof, onSendTo }: Props) {
   const draggable = !task.sortedBucket
+  // Touch drag state (for mobile)
+  const handleTouchStart = (e: TouchEvent<HTMLButtonElement>) => {
+    if (!draggable) return;
+    window.__focusbear_dragging = task.id;
+  }
+  // Clear drag state on touch end/cancel
+  const handleTouchEnd = () => {
+    if (window.__focusbear_dragging === task.id) {
+      window.__focusbear_dragging = undefined;
+    }
+  }
   const onDragStart = (e: DragEvent<HTMLButtonElement>) => {
     e.dataTransfer.setData('text/plain', task.id)
   }
   return (
     <button
-      type="button"
-      className={`card-sticky text-left cursor-grab active:cursor-grabbing select-none ${poof ? 'animate-poof' : ''} ${draggable ? 'opacity-100' : 'opacity-50'}`}
-      disabled={!draggable}
-      draggable={draggable}
-      onDragStart={onDragStart}
-      aria-label={`Task: ${task.text}`}
+  type="button"
+  className={`card-sticky text-left cursor-grab active:cursor-grabbing select-none ${poof ? 'animate-poof' : ''} ${draggable ? 'opacity-100' : 'opacity-50'}`}
+  disabled={!draggable}
+  draggable={draggable}
+  onDragStart={onDragStart}
+  onTouchStart={handleTouchStart}
+  onTouchEnd={handleTouchEnd}
+  onTouchCancel={handleTouchEnd}
+  aria-label={`Task: ${task.text}`}
     >
       <div className="text-bear-fur font-medium">{task.text}</div>
       {task.sortedBucket && (
