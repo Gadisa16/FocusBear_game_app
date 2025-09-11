@@ -3,6 +3,7 @@ import { dropTask, setShowOnboarding } from '@/features/game/gameSlice'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import type { RootState } from '@/store'
 import { burstConfetti } from '@/utils/confetti'
+import { explodeEffect } from '@/utils/explode'
 import { playCorrect, playWrong } from '@/utils/sound'
 import { BUCKETS } from '@/utils/tasks'
 import { useState } from 'react'
@@ -20,7 +21,7 @@ export default function SortingScreen() {
   const [mood, setMood] = useState<'normal'|'happy'|'sad'>('normal')
   const [shake, setShake] = useState<BucketType | null>(null)
 
-  const onDropTo = (taskId: string, bucket: BucketType) => {
+  const onDropTo = (taskId: string, bucket: BucketType, event?: React.MouseEvent | React.DragEvent) => {
     const t = tasks.find((tt: Task) => tt.id === taskId)
     if (!t || t.sortedBucket) return
     dispatch(dropTask({ id: taskId, bucket }))
@@ -28,10 +29,16 @@ export default function SortingScreen() {
       burstConfetti()
       if (soundEnabled) playCorrect()
       setMood('happy')
-  } else {
+    } else {
       setPoof(taskId)
       setShake(bucket)
       if (soundEnabled) playWrong()
+      // Try to explode at drop location if available
+      if (event && 'clientX' in event && 'clientY' in event) {
+        explodeEffect({ x: event.clientX, y: event.clientY })
+      } else {
+        explodeEffect({})
+      }
       setTimeout(() => setPoof(null), 350)
       setTimeout(() => setShake(null), 350)
       setMood('sad')
@@ -88,7 +95,7 @@ export default function SortingScreen() {
               key={t.id}
               task={t}
               poof={poof === t.id}
-              onSendTo={(bucket) => onDropTo(t.id, bucket)}
+              onSendTo={(bucket, event) => onDropTo(t.id, bucket, event)}
             />
           ))}
         </div>
@@ -96,7 +103,7 @@ export default function SortingScreen() {
         <div className="sticky bottom-0 bg-bear-sky/80 backdrop-blur supports-[backdrop-filter]:bg-bear-sky/60 border-t bg-footerStyle ">
           <div className="max-w-5xl mx-auto grid grid-cols-3 gap-3 p-3">
             {BUCKETS.map((b) => (
-              <BucketZone key={b} label={b} shake={shake === b} onDropTask={(id: string) => onDropTo(id, b)} />
+              <BucketZone key={b} label={b} shake={shake === b} onDropTask={(id: string, event) => onDropTo(id, b, event)} />
             ))}
           </div>
         </div>

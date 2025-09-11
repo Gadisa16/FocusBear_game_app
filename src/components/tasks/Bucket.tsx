@@ -3,7 +3,7 @@ import 'react-tooltip/dist/react-tooltip.css'
 
 type Props = Readonly<{
   label: 'Now' | 'Later' | 'Never'
-  onDropTask: (id: string) => void
+  onDropTask: (id: string, event?: React.DragEvent) => void
   shake?: boolean
 }>
 
@@ -18,7 +18,7 @@ export default function Bucket({ label, onDropTask, shake }: Props) {
     e.preventDefault()
     const id = e.dataTransfer.getData('text/plain')
     if (id) {
-      onDropTask(id)
+      onDropTask(id, e)
       e.currentTarget.classList.add('dropped')
       e.currentTarget.classList.remove('is-over')
       setTimeout(() => e.currentTarget.classList.remove('dropped'), 220)
