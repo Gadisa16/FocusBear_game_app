@@ -14,7 +14,7 @@ import TaskCard from './tasks/TaskCard'
 
 export default function SortingScreen() {
   const game = useAppSelector((state: RootState) => state.game)
-  const { tasks, lastMessage, soundEnabled, showOnboarding } = game
+  const { tasks, lastMessage, soundEnabled, showOnboarding, correctCount, maxScore } = game
   const dispatch = useAppDispatch()
   const [poof, setPoof] = useState<string | null>(null)
   const [mood, setMood] = useState<'normal'|'happy'|'sad'>('normal')
@@ -38,8 +38,12 @@ export default function SortingScreen() {
     }
   }
 
+  // Live score and max score
+  const liveScore = Math.round((correctCount / Math.max(1, tasks.length)) * 100)
+  const isNewMax = liveScore > maxScore
+
   return (
-  <ScreenShell title="Sort Tasks" subtitle="Drag sticky notes into buckets" mood={mood}>
+    <ScreenShell title="Sort Tasks" subtitle="Drag sticky notes into buckets" mood={mood}>
       <div className="grid gap-4 sm:gap-6">
         <div className="sr-only" aria-live="polite">{lastMessage || ''}</div>
         <div className="flex items-start justify-center gap-3">
@@ -61,6 +65,21 @@ export default function SortingScreen() {
               )}
             </div>
           </BearBubble>
+        </div>
+
+        {/* Live score and max score UI */}
+        <div className="flex flex-wrap gap-4 justify-center items-center mt-2">
+          <div className="bg-bear-honey/80 text-bear-fur font-semibold px-4 py-2 rounded-xl shadow-sm">
+            Live Score: {liveScore}%
+          </div>
+          <div className="bg-bear-sky/80 text-bear-fur font-semibold px-4 py-2 rounded-xl shadow-sm">
+            Max Score: {maxScore}%
+          </div>
+          {isNewMax && (
+            <div className="bg-green-400 text-white font-bold px-4 py-2 rounded-xl shadow animate-bounce">
+              🎉 New High Score!
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 card_grid_style">

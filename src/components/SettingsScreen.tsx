@@ -1,6 +1,7 @@
 import { goToScreen } from '@/features/game/gameSlice'
 import { useAppDispatch } from '@/hooks'
 import { getSoundSettings, playCorrect, playWrong, setSoundType, setSoundVolume, setVibrateEnabled, SoundType, unlockAudio } from '@/utils/sound'
+import { getScoreHistory } from '@/utils/tasks'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import ScreenShell from './ScreenShell'
@@ -107,8 +108,18 @@ export default function SettingsScreen() {
         </section>
 
         <section className="grid gap-2">
-          <h2 className="font-semibold text-bear-fur">History / Score</h2>
-          <p className="text-sm text-bear-furLight">Coming soon: recent scores and achievements.</p>
+          <h2 className="font-semibold text-bear-fur">Recent Scores</h2>
+          <div className="flex gap-2 flex-wrap">
+            {getScoreHistory().length === 0 ? (
+              <span className="text-bear-furLight">No scores yet.</span>
+            ) : (
+              getScoreHistory().map((s, i) => (
+                <span key={i*3} className="text-bear-fur font-semibold px-3 py-1 rounded-xl shadow-sm bg-[rgb(0,0,0,0.08)]">
+                  {s}%
+                </span>
+              ))
+            )}
+          </div>
         </section>
 
         <div>

@@ -1,5 +1,5 @@
 import { generateTasksWithGroq } from '@/utils/ai';
-import { generateTasksFromGoal } from '@/utils/tasks';
+import { generateTasksFromGoal, getScoreHistory, saveScore } from '@/utils/tasks';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { toast } from 'react-hot-toast';
 
@@ -24,6 +24,7 @@ export interface GameState {
   soundEnabled: boolean
   showOnboarding: boolean
   history: GameState['screen'][]
+  maxScore: number
 }
 
 const initialState: GameState = {
@@ -36,6 +37,10 @@ const initialState: GameState = {
   soundEnabled: true,
   showOnboarding: true,
   history: [],
+  maxScore: (() => {
+    const arr = getScoreHistory()
+    return arr.length ? Math.max(...arr) : 0
+  })(),
 }
 
 const gameSlice = createSlice({
@@ -80,6 +85,12 @@ const gameSlice = createSlice({
         state.lastMessage = pick(['Oops—honey trap!', 'Try again, cub!', 'Close! Think urgency + importance.'])
       }
       if (state.sortedCount >= state.tasks.length) {
+        // Calculate score and save
+        const score = Math.round((state.correctCount / Math.max(1, state.tasks.length)) * 100)
+        saveScore(score)
+        // Update maxScore in state
+        const arr = getScoreHistory()
+        state.maxScore = arr.length ? Math.max(...arr) : score
         state.screen = 'results'
       }
     },
