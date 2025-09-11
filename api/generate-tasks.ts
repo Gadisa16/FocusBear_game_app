@@ -97,71 +97,92 @@ async function safeText(res: Response): Promise<string> {
 
 // Ensure the output always includes all three buckets with ADHD-friendly clarity.
 function ensureDistinctBuckets(goal: string, original: Task[]): Task[] {
-  const unique = new Map<string, Task>()
-  for (const t of original) {
-    const key = t.text.trim().toLowerCase()
-    if (!unique.has(key)) unique.set(key, t)
+  const unique = deduplicateTasks(original);
+  const byBucket = groupTasksByBucket(unique);
+
+  ensureAllBucketsPresent(goal, unique, byBucket);
+  ensureMinPerBucket(goal, unique, byBucket, original.length);
+
+  const mixed = mixBuckets(byBucket);
+
+  const targetTotal = Math.min(8, Math.max(6, original.length));
+  topUpTasks(goal, mixed, targetTotal);
+
+  return mixed.map((t, i) => ({ ...t, id: `t${i + 1}` }));
+}
+
+function deduplicateTasks(tasks: Task[]): Map<string, Task> {
+  const unique = new Map<string, Task>();
+  for (const t of tasks) {
+    const key = t.text.trim().toLowerCase();
+    if (!unique.has(key)) unique.set(key, t);
   }
+  return unique;
+}
 
-  const byBucket = { Now: [] as Task[], Later: [] as Task[], Never: [] as Task[] }
-  for (const t of unique.values()) byBucket[t.correctBucket].push(t)
+function groupTasksByBucket(unique: Map<string, Task>): Record<Bucket, Task[]> {
+  const byBucket = { Now: [] as Task[], Later: [] as Task[], Never: [] as Task[] };
+  for (const t of unique.values()) byBucket[t.correctBucket].push(t);
+  return byBucket;
+}
 
-  // Ensure presence of all buckets
-  const needs: Bucket[] = (['Now', 'Later', 'Never'] as Bucket[]).filter((b) => byBucket[b].length === 0)
-  const sugg0 = suggestionsByBucket(goal)
+function ensureAllBucketsPresent(goal: string, unique: Map<string, Task>, byBucket: Record<Bucket, Task[]>) {
+  const needs: Bucket[] = (['Now', 'Later', 'Never'] as Bucket[]).filter((b) => byBucket[b].length === 0);
+  const sugg0 = suggestionsByBucket(goal);
   for (const b of needs) {
     for (const text of sugg0[b]) {
-      const key = text.trim().toLowerCase()
+      const key = text.trim().toLowerCase();
       if (!unique.has(key)) {
-        unique.set(key, { id: 'tmp', text, correctBucket: b })
-        byBucket[b].push({ id: 'tmp', text, correctBucket: b })
-        break
+        unique.set(key, { id: 'tmp', text, correctBucket: b });
+        byBucket[b].push({ id: 'tmp', text, correctBucket: b });
+        break;
       }
     }
   }
+}
 
-  // Ensure at least two per bucket when possible
-  const targetTotal = Math.min(8, Math.max(6, original.length))
-  const minPer = targetTotal >= 6 ? 2 : 1
-  const sugg1 = suggestionsByBucket(goal)
+function ensureMinPerBucket(goal: string, unique: Map<string, Task>, byBucket: Record<Bucket, Task[]>, originalLength: number) {
+  const targetTotal = Math.min(8, Math.max(6, originalLength));
+  const minPer = targetTotal >= 6 ? 2 : 1;
+  const sugg1 = suggestionsByBucket(goal);
   for (const b of ['Now', 'Later', 'Never'] as Bucket[]) {
     while (byBucket[b].length < minPer) {
-      const pick = sugg1[b].find((txt) => !unique.has(txt.trim().toLowerCase()))
-      if (!pick) break
-      unique.set(pick.trim().toLowerCase(), { id: 'tmp', text: pick, correctBucket: b })
-      byBucket[b].push({ id: 'tmp', text: pick, correctBucket: b })
+      const pick = sugg1[b].find((txt) => !unique.has(txt.trim().toLowerCase()));
+      if (!pick) break;
+      unique.set(pick.trim().toLowerCase(), { id: 'tmp', text: pick, correctBucket: b });
+      byBucket[b].push({ id: 'tmp', text: pick, correctBucket: b });
     }
   }
+}
 
-  // Build a mixed list (round-robin) to ensure visible variety and cap at 8
-  const pools = [byBucket.Now, byBucket.Later, byBucket.Never]
-  const mixed: Task[] = []
-  let added = true
+function mixBuckets(byBucket: Record<Bucket, Task[]>): Task[] {
+  const pools = [byBucket.Now, byBucket.Later, byBucket.Never];
+  const mixed: Task[] = [];
+  let added = true;
   while (mixed.length < 8 && added) {
-    added = false
+    added = false;
     for (const pool of pools) {
-      const t = pool.shift()
+      const t = pool.shift();
       if (t && mixed.length < 8) {
-        mixed.push(t)
-        added = true
+        mixed.push(t);
+        added = true;
       }
     }
   }
+  return mixed;
+}
 
-  // If still fewer than 6, top up from suggestions (rotating buckets)
-  const sugg = suggestionsByBucket(goal)
-  const order: Bucket[] = ['Now', 'Later', 'Never']
-  let oi = 0
+function topUpTasks(goal: string, mixed: Task[], targetTotal: number) {
+  const sugg = suggestionsByBucket(goal);
+  const order: Bucket[] = ['Now', 'Later', 'Never'];
+  let oi = 0;
   while (mixed.length < targetTotal) {
-    const b = order[oi % order.length]
-    const pick = sugg[b].find((txt) => !mixed.some((x) => x.text.toLowerCase() === txt.toLowerCase()))
-    if (pick) mixed.push({ id: 'tmp', text: pick, correctBucket: b })
-    oi++
-    if (oi > 30) break // safety
+    const b = order[oi % order.length];
+    const pick = sugg[b].find((txt) => !mixed.some((x) => x.text.toLowerCase() === txt.toLowerCase()));
+    if (pick) mixed.push({ id: 'tmp', text: pick, correctBucket: b });
+    oi++;
+    if (oi > 30) break; // safety
   }
-
-  // Reassign ids sequentially
-  return mixed.map((t, i) => ({ ...t, id: `t${i + 1}` }))
 }
 
 function suggestionsByBucket(goal: string): Record<Bucket, string[]> {
