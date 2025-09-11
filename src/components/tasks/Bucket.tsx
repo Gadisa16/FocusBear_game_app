@@ -25,11 +25,13 @@ export default function Bucket({ label, onDropTask, shake }: Props) {
     }
   }
   const onDragOver = (e: React.DragEvent<HTMLElement>) => {
-    e.preventDefault()
-    e.currentTarget.classList.add('is-over')
+    e.preventDefault();
+    e.currentTarget.classList.add('is-over');
+    e.currentTarget.classList.add('animate-bucket-glow');
   }
   const onDragLeave = (e: React.DragEvent<HTMLElement>) => {
-    e.currentTarget.classList.remove('is-over')
+    e.currentTarget.classList.remove('is-over');
+    e.currentTarget.classList.remove('animate-bucket-glow');
   }
 
   // Per-bucket accent color and tooltip id
@@ -43,7 +45,7 @@ export default function Bucket({ label, onDropTask, shake }: Props) {
 
   return (
     <section
-      className={`bear-bucket relative w-[90px] h-[90px] sm:w-[150px] sm:h-[150px] bg-transparent rounded-full p-3 pt-6 flex items-center justify-center text-[#6B4F3A] font-semibold ${shake ? 'animate-shake' : ''} border-4 border-dashed transition-transform transition-shadow transition-bg duration-200 ease-in-out cursor-pointer`}
+  className={`bear-bucket relative w-[90px] h-[90px] sm:w-[150px] sm:h-[150px] bg-transparent rounded-full p-3 pt-6 flex items-center justify-center text-[#6B4F3A] font-semibold border-4 border-dashed transition-transform transition-shadow transition-bg duration-200 ease-in-out cursor-pointer ${shake ? 'animate-shake' : ''}`}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       onDrop={(e) => { e.currentTarget.classList.remove('is-over'); onDrop(e) }}

@@ -1,3 +1,42 @@
+/* Card drag and drop polish */
+.card-sticky {
+  position: relative;
+  transition: box-shadow 0.18s, transform 0.18s cubic-bezier(.4,2,.6,1);
+}
+.card-sticky:active {
+  z-index: 30;
+}
+.animate-poof {
+  animation: poof 0.35s cubic-bezier(.4,2,.6,1);
+}
+@keyframes poof {
+  0% { opacity: 1; transform: scale(1) rotate(0deg); }
+  60% { opacity: 0.7; transform: scale(1.15) rotate(-8deg); }
+  100% { opacity: 0; transform: scale(0.7) rotate(12deg); }
+}
+.animate-sparkle {
+  animation: sparkle 0.7s linear;
+}
+@keyframes sparkle {
+  0% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+  30% { opacity: 1; transform: scale(1.2) rotate(10deg); }
+  60% { opacity: 1; transform: scale(1) rotate(-10deg); }
+  100% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+}
+.animate-bucket-glow {
+  box-shadow: 0 0 0 6px #FFB70344, 0 0 0 12px #2A9D8F22;
+  filter: brightness(1.08) drop-shadow(0 0 8px #FFB70388);
+  transition: box-shadow 0.18s, filter 0.18s;
+}
+.animate-shake {
+  animation: shake 0.35s cubic-bezier(.36,.07,.19,.97) both;
+}
+@keyframes shake {
+  10%, 90% { transform: translateX(-2px); }
+  20%, 80% { transform: translateX(4px); }
+  30%, 50%, 70% { transform: translateX(-8px); }
+  40%, 60% { transform: translateX(8px); }
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
