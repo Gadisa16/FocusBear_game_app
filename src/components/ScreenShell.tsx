@@ -45,7 +45,7 @@ export default function ScreenShell({ title, subtitle, mood = 'normal', children
             data-tooltip-id="sound-tooltip"
             data-tooltip-content="toggle sound!"
           >{soundEnabled ? '🔊' : '🔈'}
-          <Tooltip id="sound-tooltip" place="left" />
+          <Tooltip id="sound-tooltip" place="bottom" />
           </button>
           <button
             aria-label="Settings"
@@ -54,14 +54,8 @@ export default function ScreenShell({ title, subtitle, mood = 'normal', children
             data-tooltip-id="settings-tooltip"
             data-tooltip-content="Sound & history"
           >⚙️
-            <Tooltip id="settings-tooltip" place="left" />
+            <Tooltip id="settings-tooltip" />
           </button>
-          {/* <button
-            aria-label="Help"
-            onClick={() => dispatch(setShowOnboarding(true))}
-            className="px-3 py-2 rounded-lg border bg-white text-bear-fur hover:bg-bear-sky"
-            title="Show help"
-          >?</button> */}
         </div>
       </header>
       <main className="flex-1 p-4">{children}</main>
