@@ -30,8 +30,8 @@ async function groqGenerate(goal: string, apiKey: string): Promise<Task[]> {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      model: process.env.VERCEL_GROQ_MODEL || process.env.GROQ_MODEL || 'llama-3.1-8b-instant',
-      temperature: 0.3,
+      model: process.env.GROQ_MODEL || 'llama-3.1-8b-instant', // Switched to a more capable model for better nuance
+      temperature: 0.4, // Slightly increased for variety while keeping consistency
       max_tokens: 700,
       messages: [
         {
@@ -39,12 +39,12 @@ async function groqGenerate(goal: string, apiKey: string): Promise<Task[]> {
           role: 'system',
           content:
             [
-              'You are an expert at the Eisenhower matrix for ADHD users. Your job is to produce a clean, unambiguous set of tasks split across Now / Later / Never.',
-              '- Now = urgent + important, tiny next actions doable immediately in under 10 minutes (micro-steps).',
-              '- Later = important but not urgent. Scheduling, planning, follow-ups, larger deliverables that are not a tiny first step.',
-              '- Never = distractions or nice-to-haves not needed for the goal right now (e.g., checking social media, tweaking aesthetics).',
-              'If a task could be either Now or Later, choose Later unless it is a single tiny first step. Avoid ambiguous or multi-part tasks.',
-              'Keep text concise (4–9 words), imperative, one action per task. No explanations or extra fields. Respond ONLY with strict JSON that matches the schema.'
+              'You are an expert at the Eisenhower matrix tailored for ADHD users. Your job is to produce a clean, unambiguous set of tasks split across Now / Later / Never with crystal-clear distinctions.',
+              '- Now = urgent + important: ONLY tiny, immediate next actions that take under 5-10 minutes, no preparation needed, doable right this second (e.g., "Jot down 3 key ideas" not "Research topic"). These are micro-first-steps to build momentum without overwhelm.',
+              '- Later = important but not urgent: Larger tasks, planning, scheduling, follow-ups, or actions that require setup/time blocking/deliverables beyond a quick start (e.g., "Schedule research session" or "Draft full section"). These can wait but advance the goal long-term.',
+              '- Never = neither: Pure distractions, irrelevant chores, or low-value activities that derail focus (e.g., "Check social media" or "Organize unrelated files"). Avoid any tie to the goal.',
+              'Strict rules: If a task could fit Now or Later, ALWAYS classify as Later unless it\'s a single, bite-sized immediate action. No multi-part, vague, or overlapping tasks. Ensure buckets are distinctly different—Now feels instant, Later feels planned/future.',
+              'Keep text concise (4–12 words), imperative, one single action per task. No explanations, prefixes, or extra fields. Respond ONLY with strict JSON that matches the schema.'
             ].join('\n')
         },
         {
@@ -53,11 +53,11 @@ async function groqGenerate(goal: string, apiKey: string): Promise<Task[]> {
           content:
             [
               `Goal: ${goal}`,
-              'Generate 6–8 tasks with a clear mix across all three buckets (include all three buckets). Provide at least two tasks per bucket when possible.',
-              'Use these examples to guide classification:',
-              '- Now: "Sketch a one-page outline"',
-              '- Later: "Submit business plan for award"',
-              '- Never: "Check Facebook or Instagram"',
+              'Generate exactly 6–8 tasks with a balanced mix: at least 2 Now, 2 Later, 2 Never. Ensure clear separation—no Now task should feel like it could be delayed, no Later should seem immediate.',
+              'Use these examples to strictly guide classification (adapt to goal but maintain distinction):',
+              '- Now: "List 3 main sections", "Write opening sentence", "Brainstorm 5 keywords".',
+              '- Later: "Research competitors in depth", "Schedule writing session", "Submit plan for award".',
+              '- Never: "Browse unrelated news", "Check Facebook", "Tidy desk unnecessarily".',
               'Return strict JSON of this shape: {"tasks":[{"text":"...","correctBucket":"Now|Later|Never"}]}'
             ].join('\n')
         },
@@ -189,28 +189,28 @@ function suggestionsByBucket(goal: string): Record<Bucket, string[]> {
   const g = goal.trim()
   return {
     Now: [
-      'Create the project folder',
-      'Sketch a one-page outline',
-      'Write a one-sentence goal',
-      'List top three milestones',
-      'Write the first three bullets',
-      'List key assumptions to test',
+      `Jot down 3 key ideas for ${g}`,
+      'Create project folder',
+      'Write one-sentence summary',
+      'List top 3 milestones',
+      'Brainstorm 5 keywords',
+      'Sketch quick outline',
     ],
     Later: [
-      `Block calendar time for ${g}`,
-      'Book a mentor review',
-      'Research templates and examples',
-      'Gather market research sources',
-      `Submit ${g} for an award`,
-      'Build a basic financial model',
+      `Schedule deep work for ${g}`,
+      'Research detailed resources',
+      'Book mentor feedback session',
+      `Build full model for ${g}`,
+      'Submit for external review',
+      'Plan implementation timeline',
     ],
     Never: [
-      'Check Facebook or Instagram',
-      'Tweak logo or colors',
-      'Rearrange desk accessories',
-      'Clean email inbox completely',
-      'Browse startup news',
-      'Customize fonts for fun',
+      'Check social media feeds',
+      'Tweak unrelated aesthetics',
+      'Organize entire workspace',
+      'Browse random news sites',
+      'Customize fonts playfully',
+      'Clean old email inbox',
     ],
   }
 }
