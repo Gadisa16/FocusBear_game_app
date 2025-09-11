@@ -21,7 +21,11 @@ export default function SortingScreen() {
   const [mood, setMood] = useState<'normal'|'happy'|'sad'>('normal')
   const [shake, setShake] = useState<BucketType | null>(null)
 
-  const onDropTo = (taskId: string, bucket: BucketType, event?: React.MouseEvent | React.DragEvent) => {
+  const onDropTo = (
+    taskId: string,
+    bucket: BucketType,
+    event?: React.MouseEvent | React.DragEvent | React.TouchEvent
+  ) => {
     const t = tasks.find((tt: Task) => tt.id === taskId)
     if (!t || t.sortedBucket) return
     dispatch(dropTask({ id: taskId, bucket }))
@@ -36,6 +40,8 @@ export default function SortingScreen() {
       // Try to explode at drop location if available
       if (event && 'clientX' in event && 'clientY' in event) {
         explodeEffect({ x: event.clientX, y: event.clientY })
+      } else if (event && 'touches' in event && event.touches.length > 0) {
+        explodeEffect({ x: event.touches[0].clientX, y: event.touches[0].clientY })
       } else {
         explodeEffect({})
       }
