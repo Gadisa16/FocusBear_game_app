@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux'
 import ResultsScreen from './components/ResultsScreen'
+import SettingsScreen from './components/SettingsScreen'
 import SortingScreen from './components/SortingScreen'
 import StartScreen from './components/StartScreen'
 import type { RootState } from './store'
@@ -11,6 +12,7 @@ export default function App() {
       {screen === 'start' && <StartScreen />}
       {screen === 'sort' && <SortingScreen />}
       {screen === 'results' && <ResultsScreen />}
+  {screen === 'settings' && <SettingsScreen />}
     </div>
   )
 }

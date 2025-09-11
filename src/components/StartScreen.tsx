@@ -1,6 +1,7 @@
 import { generateTasks, goToScreen, setGoal } from '@/features/game/gameSlice'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import type { RootState } from '@/store'
+import { unlockAudio } from '@/utils/sound'
 import { useState } from 'react'
 import Bear from './Bear'
 import ScreenShell from './ScreenShell'
@@ -14,6 +15,7 @@ export default function StartScreen() {
   const start = async () => {
     const g = goal.trim() || 'Finish microeconomics assignment'
     dispatch(setGoal(g))
+  unlockAudio()
     await dispatch(generateTasks(g))
     dispatch(goToScreen('sort'))
   }

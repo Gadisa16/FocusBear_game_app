@@ -13,7 +13,7 @@ export interface Task {
 }
 
 export interface GameState {
-  screen: 'start' | 'sort' | 'results'
+  screen: 'start' | 'sort' | 'results' | 'settings'
   goal: string
   tasks: Task[]
   sortedCount: number
@@ -23,6 +23,7 @@ export interface GameState {
   error?: string
   soundEnabled: boolean
   showOnboarding: boolean
+  history: GameState['screen'][]
 }
 
 const initialState: GameState = {
@@ -34,6 +35,7 @@ const initialState: GameState = {
   loading: false,
   soundEnabled: true,
   showOnboarding: true,
+  history: [],
 }
 
 const gameSlice = createSlice({
@@ -49,7 +51,14 @@ const gameSlice = createSlice({
       state.correctCount = 0
     },
     goToScreen(state, action: PayloadAction<GameState['screen']>) {
-      state.screen = action.payload
+      if (state.screen !== action.payload) {
+        state.history.push(state.screen)
+        state.screen = action.payload
+      }
+    },
+    goBack(state) {
+      const prev = state.history.pop()
+      state.screen = prev ?? 'start'
     },
     setShowOnboarding(state, action: PayloadAction<boolean>) {
       state.showOnboarding = action.payload
@@ -84,6 +93,7 @@ const gameSlice = createSlice({
       state.loading = false
       state.error = undefined
       state.showOnboarding = true
+  state.history = []
     }
   },
   extraReducers: (builder) => {
@@ -123,5 +133,5 @@ export const generateTasks = createAsyncThunk(
   }
 )
 
-export const { setGoal, setTasks, goToScreen, dropTask, reset, toggleSound, setShowOnboarding } = gameSlice.actions
+export const { setGoal, setTasks, goToScreen, goBack, dropTask, reset, toggleSound, setShowOnboarding } = gameSlice.actions
 export default gameSlice.reducer

@@ -1,9 +1,8 @@
-import { goToScreen, reset, toggleSound } from '@/features/game/gameSlice'
+import { goBack, goToScreen, toggleSound } from '@/features/game/gameSlice'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import type { RootState } from '@/store'
 import type { PropsWithChildren } from 'react'
 import { Tooltip } from 'react-tooltip'
-import Bear from './Bear'
 
 interface Props {
   title: string
@@ -16,8 +15,7 @@ export default function ScreenShell({ title, subtitle, mood = 'normal', children
   const soundEnabled = game.soundEnabled
   const dispatch = useAppDispatch()
   const handleBearClick = () => {
-    dispatch(reset())
-    dispatch(goToScreen('start'))
+  dispatch(goBack())
   }
   return (
     <div className="min-h-full flex flex-col">
@@ -48,6 +46,15 @@ export default function ScreenShell({ title, subtitle, mood = 'normal', children
             data-tooltip-content="toggle sound!"
           >{soundEnabled ? '🔊' : '🔈'}
           <Tooltip id="sound-tooltip" place="left" />
+          </button>
+          <button
+            aria-label="Settings"
+            onClick={() => dispatch(goToScreen('settings'))}
+            className="px-3 py-2 rounded-lg border bg-white text-bear-fur hover:bg-bear-sky"
+            data-tooltip-id="settings-tooltip"
+            data-tooltip-content="Sound & history"
+          >⚙️
+            <Tooltip id="settings-tooltip" place="left" />
           </button>
           {/* <button
             aria-label="Help"
