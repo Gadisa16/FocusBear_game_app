@@ -43,7 +43,7 @@ async function groqGenerate(goal: string, apiKey: string): Promise<Task[]> {
               '- Now = urgent + important: ONLY tiny, immediate next actions that take under 5-10 minutes, no preparation needed, doable right this second (e.g., "Jot down 3 key ideas" not "Research topic"). These are micro-first-steps to build momentum without overwhelm.',
               '- Later = important but not urgent: Larger tasks, planning, scheduling, follow-ups, or actions that require setup/time blocking/deliverables beyond a quick start (e.g., "Schedule research session" or "Draft full section"). These can wait but advance the goal long-term.',
               '- Never = neither: Pure distractions, irrelevant chores, or low-value activities that derail focus (e.g., "Check social media" or "Organize unrelated files"). Avoid any tie to the goal.',
-              'Strict rules: If a task could fit Now or Later, ALWAYS classify as Later unless it\'s a single, bite-sized immediate action. No multi-part, vague, or overlapping tasks. Ensure buckets are distinctly different—Now feels instant, Later feels planned/future.',
+              'Strict rules: If a task could fit Now or Later, ALWAYS classify as Now, but only if it is a single, bite-sized action that can be done immediately without preparation. No multi-part, vague, or overlapping tasks. Ensure buckets are distinctly different—Now feels instant, Later feels planned/future.',
               'Keep text concise (4–12 words), imperative, one single action per task. No explanations, prefixes, or extra fields. Respond ONLY with strict JSON that matches the schema.'
             ].join('\n')
         },
@@ -120,7 +120,7 @@ function classifyBucket(text: string): Bucket {
   // Never: distractions/low value
   const neverWords = [
     'facebook', 'instagram', 'tiktok', 'twitter', 'x.com', 'reddit', 'youtube', 'social media', 'browse', 'news',
-    'tidy', 'clean', 'organize', 'rearrange', 'wallpaper', 'fonts', 'logo', 'colors', 'aesthetics', 'customize'
+    'tidy', 'clean', 'organize', 'rearrange', 'wallpaper', 'fonts', 'logo', 'colors', 'aesthetics', 'customize', 'unrelated'
   ]
   if (neverWords.some((w) => s.includes(w))) return 'Never'
 
