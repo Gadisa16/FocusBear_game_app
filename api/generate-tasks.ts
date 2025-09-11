@@ -30,7 +30,7 @@ async function groqGenerate(goal: string, apiKey: string): Promise<Task[]> {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      model: process.env.GROQ_MODEL || 'llama-3.1-8b-instant', // Switched to a more capable model for better nuance
+      model: process.env.VERCEL_GROQ_MODEL || process.env.GROQ_MODEL || process.env.VITE_GROQ_MODEL || 'mixtral-8x7b-32768',
       temperature: 0.4, // Slightly increased for variety while keeping consistency
       max_tokens: 700,
       messages: [
@@ -97,18 +97,59 @@ async function safeText(res: Response): Promise<string> {
 
 // Ensure the output always includes all three buckets with ADHD-friendly clarity.
 function ensureDistinctBuckets(goal: string, original: Task[]): Task[] {
-  const unique = deduplicateTasks(original);
+  // First, deterministically re-bucket tasks using strict heuristics.
+  const rebucketed = original.map((t) => ({ ...t, correctBucket: classifyBucket(t.text) }))
+
+  const unique = deduplicateTasks(rebucketed);
   const byBucket = groupTasksByBucket(unique);
 
   ensureAllBucketsPresent(goal, unique, byBucket);
-  ensureMinPerBucket(goal, unique, byBucket, original.length);
+  ensureMinPerBucket(goal, unique, byBucket, rebucketed.length);
 
   const mixed = mixBuckets(byBucket);
 
-  const targetTotal = Math.min(8, Math.max(6, original.length));
+  const targetTotal = Math.min(8, Math.max(6, rebucketed.length));
   topUpTasks(goal, mixed, targetTotal);
 
   return mixed.map((t, i) => ({ ...t, id: `t${i + 1}` }));
+}
+
+// Heuristic classifier to make Now/Later/Never distinctions unambiguous.
+function classifyBucket(text: string): Bucket {
+  const s = text.trim().toLowerCase()
+  // Never: distractions/low value
+  const neverWords = [
+    'facebook', 'instagram', 'tiktok', 'twitter', 'x.com', 'reddit', 'youtube', 'social media', 'browse', 'news',
+    'tidy', 'clean', 'organize', 'rearrange', 'wallpaper', 'fonts', 'logo', 'colors', 'aesthetics', 'customize'
+  ]
+  if (neverWords.some((w) => s.includes(w))) return 'Never'
+
+  // Now: micro first steps under ~10 minutes
+  const nowPhrases = [
+    'jot', 'list ', 'write first', 'one-sentence', 'write one sentence', 'brainstorm', 'sketch', 'outline',
+    'create project folder', 'create the project folder', 'open doc', 'name file', 'add 3 bullets', 'add three bullets',
+    'note ', 'quick outline', 'draft 3 bullets', 'first three bullets'
+  ]
+  const laterPhrases = [
+    'schedule', 'book', 'plan', 'submit', 'research', 'gather', 'collect', 'compile', 'build', 'draft', 'present',
+    'review session', 'financial model', 'market research', 'meeting', 'meet', 'email', 'call', 'apply', 'file', 'prepare'
+  ]
+
+  const nowHit = nowPhrases.some((w) => s.includes(w))
+  const laterHit = laterPhrases.some((w) => s.includes(w))
+
+  if (nowHit && !laterHit) return 'Now'
+  if (laterHit && !nowHit) return 'Later'
+  if (nowHit && laterHit) {
+    // Prefer Later when ambiguous unless clearly tiny/micro
+    const microHints = ['first', 'one', 'quick', '3 ', ' three ', ' outline']
+    return microHints.some((h) => s.includes(h)) && s.length <= 60 ? 'Now' : 'Later'
+  }
+
+  // Fallback heuristics: very short imperative tasks => Now; otherwise Later
+  const words = s.split(/\s+/).filter(Boolean)
+  if (words.length <= 6) return 'Now'
+  return 'Later'
 }
 
 function deduplicateTasks(tasks: Task[]): Map<string, Task> {
@@ -236,5 +277,20 @@ export default async function handler(req: any, res: any) {
   } catch (err: any) {
     console.error('Error generating tasks:', err);
     res.status(200).json({ tasks: ensureDistinctBuckets(String(req.body?.goal || ''), fallbackTasks(String(req.body?.goal || ''))) })
+  }
+}
+
+// Named export for local testing and dev middleware
+export async function generateTasksForGoal(goal: string): Promise<Task[]> {
+  const g = String(goal || '').trim()
+  if (!g) return ensureDistinctBuckets('', fallbackTasks(''))
+  const key = process.env.GROQ_API_KEY
+  try {
+    if (!key) return ensureDistinctBuckets(g, fallbackTasks(g))
+    const tasks = await groqGenerate(g, key)
+    return tasks
+  } catch (e: any) {
+    console.warn('Groq generation failed, using fallback:', e?.message || e)
+    return ensureDistinctBuckets(g, fallbackTasks(g))
   }
 }
