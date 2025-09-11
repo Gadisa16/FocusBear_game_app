@@ -24,17 +24,16 @@ export default function ScreenShell({ title, subtitle, mood = 'normal', children
       <header
         className="p-4 flex items-center gap-3 justify-between bg-headerStyle">
         <div className="flex items-center gap-3">
-          <button
+            <button
             aria-label="Back to goal input"
             onClick={handleBearClick}
             style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
-            // title="Back to start"
             data-tooltip-id="app_logo_placeholder"
             data-tooltip-content="Back to start"
-          >
-            <Bear size={40} mood={mood} />
+            >
+            <img src="/FocusBearLogo.svg" alt="FocusBear Logo" width={40} height={40} />
             <Tooltip id="app_logo_placeholder" place="right" />
-          </button>
+            </button>
           <div>
             <h1 className="text-xl font-bold text-bear-fur">{title}</h1>
             {subtitle && <p className="text-sm text-bear-furLight">{subtitle}</p>}
