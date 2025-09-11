@@ -106,17 +106,17 @@ export default function SettingsScreen() {
 
         <section className="flex flex-wrap gap-3 justify-center">
           <button
-            className="bg-bear-honey text-bear-fur font-semibold py-1 px-3 rounded-xl shadow hover:opacity-90 active:opacity-80 transition"
+            className="bg-bear-honey text-bear-fur font-semibold py-2 px-3 sm:py-2 sm:px-4 rounded-xl shadow hover:opacity-90 active:opacity-80 transition"
             onClick={apply}
             type="button"
           >Apply</button>
           <button
-            className="bg-white text-bear-fur font-semibold py-3 px-6 rounded-xl border shadow hover:bg-bear-sky/40 active:opacity-80 transition"
+            className="bg-white text-bear-fur font-semibold py-2 px-3 sm:py-3 sm:px-6 rounded-xl border shadow hover:bg-bear-sky/40 active:opacity-80 transition"
             onClick={() => { saveSettings(); playCorrect() }}
             type="button"
           >Test Correct</button>
           <button
-            className="bg-white text-bear-fur font-semibold py-3 px-6 rounded-xl border shadow hover:bg-bear-sky/40 active:opacity-80 transition"
+            className="bg-white text-bear-fur font-semibold py-2 px-3 sm:py-3 sm:px-6 rounded-xl border shadow hover:bg-bear-sky/40 active:opacity-80 transition"
             onClick={() => { saveSettings(); playWrong() }}
             type="button"
           >Test Wrong</button>
@@ -157,7 +157,7 @@ export default function SettingsScreen() {
         </section>
 
         <div>
-          <button className="bg-bear-honey text-bear-fur font-semibold py-3 px-4 rounded-xl shadow hover:opacity-90"
+          <button className="bg-bear-honey text-bear-fur font-semibold py-2 px-3 sm:py-2 sm:px-4 rounded-xl shadow hover:opacity-90"
             onClick={() => dispatch(goToScreen('start'))}>Back</button>
         </div>
       </div>
