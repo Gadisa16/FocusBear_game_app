@@ -68,7 +68,7 @@ export default function SortingScreen() {
         </div>
 
         {/* Live score and max score UI */}
-        <div className="flex flex-wrap gap-4 justify-center items-center mt-2">
+        <div className="flex flex-wrap gap-4 justify-center items-center">
           <div className="bg-bear-honey/80 text-bear-fur font-semibold px-4 py-2 rounded-xl shadow-sm">
             Live Score: {liveScore}%
           </div>
