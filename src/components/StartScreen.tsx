@@ -48,9 +48,21 @@ export default function StartScreen() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-bear-honey text-bear-fur font-semibold py-3 rounded-xl shadow hover:opacity-90 active:opacity-80 disabled:opacity-60"
+            className="relative w-full bg-bear-honey text-bear-fur font-semibold py-3 rounded-xl shadow hover:opacity-90 active:opacity-80 disabled:opacity-60 focus:outline-none focus:ring-2 focus:ring-bear-fur/40 transition"
+            aria-live="polite"
           >
-            {loading ? 'Generating…' : 'Generate Tasks'}
+            {loading ? (
+              <span className="bear-spinner-wrapper">
+                <span className="bear-spinner" aria-hidden>
+                  <span className="ring" />
+                  <span className="drop" />
+                </span>
+                <span className="bear-spinner-text">Generating<span className="bear-spinner-dots" aria-hidden /></span>
+                <span className="sr-only">Generating tasks…</span>
+              </span>
+            ) : (
+              'Generate Tasks'
+            )}
           </button>
         </form>
         {/* <div className="text-xs text-bear-furLight border rounded-xl p-3 bg-white">

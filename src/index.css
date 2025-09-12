@@ -319,3 +319,61 @@ html, body, #root {
   margin: 0 auto;
   width: 90%;
 }
+
+/* --- Generate button playful spinner --- */
+.bear-spinner-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+.bear-spinner {
+  width: 1.2rem;
+  height: 1.2rem;
+  position: relative;
+}
+.bear-spinner .ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.35);
+  border-top-color: #6B4F3A; /* bear fur */
+  animation: spin 0.9s linear infinite;
+}
+.bear-spinner .drop {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0.55rem;
+  height: 0.55rem;
+  margin: -0.275rem 0 0 -0.275rem;
+  background: #FFB703; /* honey */
+  border-radius: 35% 60% 55% 60%;
+  animation: drip 1.4s ease-in-out infinite;
+  box-shadow: 0 0 0 2px rgba(255,183,3,0.15), 0 2px 4px rgba(0,0,0,0.15);
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes drip {
+  0% { transform: translateY(-35%) scale(0.9) rotate(8deg); }
+  35% { transform: translateY(10%) scale(1) rotate(-10deg); }
+  70% { transform: translateY(-20%) scale(0.85) rotate(6deg); }
+  100% { transform: translateY(-35%) scale(0.9) rotate(8deg); }
+}
+.bear-spinner-text {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 600;
+  letter-spacing: .5px;
+}
+.bear-spinner-dots::after {
+  content: '…';
+  animation: dots 1.6s steps(4,end) infinite;
+}
+@keyframes dots {
+  0% { content: ''; }
+  25% { content: '.'; }
+  50% { content: '..'; }
+  75% { content: '...'; }
+  100% { content: ''; }
+}
