@@ -28,28 +28,30 @@ async function groqGenerate(goal: string, apiKey: string): Promise<Task[]> {
     },
     body: JSON.stringify({
       model: process.env.VERCEL_GROQ_MODEL || process.env.GROQ_MODEL || process.env.VITE_GROQ_MODEL || 'mixtral-8x7b-32768',
-  temperature: 0.4,
+      temperature: 0.4,
       max_tokens: 700,
       messages: [
         {
+          //how to behave and constraints (Set the assistant’s rules, persona, and hard constraints.)
           role: 'system',
           content: [
-            'You are an expert ADHD productivity coach. Your job is to produce a clean, unambiguous set of tasks split across three buckets: Current Goal, Next Task, and After Work.',
+            'You are an expert ADHD productivity coach. Your job is to produce a clean, unambiguous and simple set of tasks split across three buckets: Current Goal, Next Task, and After Work.',
             '- Current Goal = ONLY tiny, immediate next actions that take under 5–10 minutes and directly progress the stated goal. Must be executable right this second (e.g., "Write the opening sentence", "List 3 subtopics").',
             '- Next Task = tasks that are useful but not the exact micro-step toward the current goal. They are still related but involve prep, setup, or future steps (e.g., "Schedule research session", "Gather reading materials").',
             '- After Work = distractions or unrelated activities that do not help the goal at all (e.g., "Check Instagram", "Rearrange files", "Watch YouTube").',
-            'Strict rules: If a task could fit both Current Goal and Next Task, ALWAYS classify as Current Goal only if it is a single, bite-sized action that directly moves the goal forward immediately. Otherwise, classify as Next Task.',
+            'Strict rules: If a task could fit both Current Goal and Next Task, ALWAYS classify as Current Goal only if it is a single, bite-sized action that directly moves the goal forward immediately. Otherwise, classify as Next Task. No vague, Confusing, or overlapping tasks since this is for ADHD people or consider as if it is for children.',
             'Keep text concise (4–12 words), imperative, and action-oriented. No explanations or extra fields. Respond ONLY with valid JSON in the schema.'
           ].join('\n')
         },
         {
+          //what to do with the given input. (Purpose: Provide the actual task/request and inputs.)
           role: 'user',
           content: [
             `Goal: ${goal}`,
             'Generate exactly 6–8 tasks with a balanced mix: at least 2 Current Goal, 2 Next Task, 2 After Work.',
             'Examples:',
-            '- Current Goal: "Draft opening sentence", "List 3 main points", "Note 5 references".',
-            '- Next Task: "Schedule research time", "Review assignment outline", "Gather 3 articles".',
+            '- Current Goal: "Draft opening sentence", "List 3 main points", "Jot down 5 references", "Write one opening sentence", "Open the document and write the title".',
+            '- Next Task: "Schedule research time", "Review assignment outline", "Gather 3 articles", "Find 3 reference articles to read later".',
             '- After Work: "Check TikTok", "Sort old photos", "Read random news".',
             'Return strict JSON of this shape: {"tasks":[{"text":"...","correctBucket":"Current Goal|Next Task|After Work"}]}'
           ].join('\n')

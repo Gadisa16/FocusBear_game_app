@@ -12,6 +12,7 @@ import BearBubble from './bear/BearBubble'
 import ScreenShell from './ScreenShell'
 import BucketZone from './tasks/Bucket'
 import TaskCard from './tasks/TaskCard'
+import { Tooltip } from 'react-tooltip'
 
 export default function SortingScreen() {
   const game = useAppSelector((state: RootState) => state.game)
@@ -82,11 +83,12 @@ export default function SortingScreen() {
 
         {/* Live score and max score UI */}
         <div className="flex flex-wrap gap-4 justify-center items-center">
-          <div className="bg-bear-honey/80 text-bear-fur font-semibold px-4 py-2 rounded-xl shadow-sm">
+          <div className="bg-bear-honey/80 text-bear-fur font-semibold px-4 py-2 rounded-xl shadow-lg">
             Live Score: {liveScore}%
           </div>
-          <div className="bg-bear-sky/80 text-bear-fur font-semibold px-4 py-2 rounded-xl shadow-sm">
+          <div className="bg-bear-sky/80 text-bear-fur font-semibold px-4 py-2 rounded-xl shadow-lg" data-tooltip-id='max-score-tip' data-tooltip-content="Your highest of last 5 games. Try to beat it!">
             Max Score: {maxScore}%
+            <Tooltip id="max-score-tip" />
           </div>
           {isNewMax && (
             <div className="bg-green-400 text-white font-bold px-4 py-2 rounded-xl shadow animate-bounce">
