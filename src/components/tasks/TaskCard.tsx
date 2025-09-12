@@ -63,7 +63,7 @@ export default function TaskCard({ task, poof, onSendTo }: Props) {
       )}
       {/* Sparkle/star effect only when dragging */}
       {isDragging && (
-        <span className="absolute left-1/2 top-1/2 pointer-events-none animate-sparkle" aria-hidden>✨</span>
+        <span className="absolute left-1/2 top-1/2 pointer-events-none animate-sparkle" aria-hidden>✨✨✨</span>
       )}
       {!isSorted && onSendTo && (
         <div className="mt-3 flex gap-2 opacity-0 focus-within:opacity-100 hover:opacity-100 transition-opacity" aria-label="Quick send options">
