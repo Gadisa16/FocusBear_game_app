@@ -1,7 +1,7 @@
 import type { Bucket, Task } from '@/features/game/gameSlice'
 
 // Client calls our serverless API; no API keys in the browser.
-const isBucket = (b: unknown): b is Bucket => b === 'Now' || b === 'Later' || b === 'Never'
+const isBucket = (b: unknown): b is Bucket => b === 'Current Goal' || b === 'Next Task' || b === 'After Work'
 
 export async function generateTasksWithGroq(goal: string, opts?: { signal?: AbortSignal }): Promise<Task[]> {
   const controller = new AbortController()
@@ -24,7 +24,7 @@ export async function generateTasksWithGroq(goal: string, opts?: { signal?: Abor
     const tasks: Task[] = items
       .filter((x) => typeof x?.text === 'string' && isBucket(x?.correctBucket))
       .slice(0, 8)
-      .map((x, i) => ({ id: `t${i + 1}`, text: String(x.text).trim(), correctBucket: x.correctBucket }))
+  .map((x, i) => ({ id: `t${i + 1}`, text: String(x.text).trim(), correctBucket: x.correctBucket }))
     if (!tasks.length) throw new Error('No tasks returned')
     return tasks
   } finally {

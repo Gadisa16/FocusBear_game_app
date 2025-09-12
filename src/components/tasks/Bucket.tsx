@@ -2,16 +2,16 @@ import { Tooltip } from 'react-tooltip'
 import 'react-tooltip/dist/react-tooltip.css'
 
 type Props = Readonly<{
-  label: 'Now' | 'Later' | 'Never'
+  label: 'Current Goal' | 'Next Task' | 'After Work'
   onDropTask: (id: string, event?: React.DragEvent) => void
   shake?: boolean
 }>
 
 export default function Bucket({ label, onDropTask, shake }: Props) {
   const descriptions: Record<Props['label'], string> = {
-    Now: 'Urgent and important!',
-    Later: 'Important but not urgent!',
-    Never: 'Neither important nor urgent!',
+    'Current Goal': 'Immediate micro-step directly advancing goal',
+    'Next Task': 'Related supporting or follow-on task',
+    'After Work': 'Distraction / procrastination',
   }
 
   const onDrop = (e: React.DragEvent<HTMLElement>) => {
@@ -36,9 +36,9 @@ export default function Bucket({ label, onDropTask, shake }: Props) {
 
   // Per-bucket accent color and tooltip id
   const borderColorMap: Record<Props['label'], `#${string}`> = {
-    Now: '#2A9D8F',
-    Later: '#FFB703',
-    Never: '#E76F51',
+    'Current Goal': '#2A9D8F',
+    'Next Task': '#FFB703',
+    'After Work': '#E76F51',
   }
   const borderColor = borderColorMap[label]
   const tooltipId = `bucket-tip-${label}`
@@ -85,7 +85,7 @@ export default function Bucket({ label, onDropTask, shake }: Props) {
         sm:w-10 sm:top-[102px]" />
 
       {/* Label only; description moved to tooltip */}
-      <span className="label absolute bottom-2 text-lg font-bold text-center">{label}</span>
+      <span className="label absolute bottom-4 text-[0.7vw] sm:text-lg font-bold text-center tracking-[-0.03rem]">{label}</span>
 
       {/* Tooltip content */}
       <Tooltip id={tooltipId} place="top" />

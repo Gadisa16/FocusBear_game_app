@@ -58,9 +58,9 @@ export default function TaskCard({ task, poof, onSendTo }: Props) {
       )}
       {!task.sortedBucket && onSendTo && (
         <div className="mt-3 flex gap-2 opacity-0 focus-within:opacity-100 hover:opacity-100 transition-opacity" aria-label="Quick send options">
-          <button type="button" onClick={e => onSendTo('Now', e)} className="px-2 py-1 rounded bg-bear-honey/80 text-bear-fur text-xs">Now</button>
-          <button type="button" onClick={e => onSendTo('Later', e)} className="px-2 py-1 rounded bg-bear-leaf/20 text-bear-fur text-xs">Later</button>
-          <button type="button" onClick={e => onSendTo('Never', e)} className="px-2 py-1 rounded bg-bear-berry/20 text-bear-fur text-xs">Never</button>
+          <button type="button" onClick={e => onSendTo('Current Goal', e)} className="px-2 py-1 rounded bg-bear-honey/80 text-bear-fur text-xs">Current Goal</button>
+          <button type="button" onClick={e => onSendTo('Next Task', e)} className="px-2 py-1 rounded bg-bear-leaf/20 text-bear-fur text-xs">Next Task</button>
+          <button type="button" onClick={e => onSendTo('After Work', e)} className="px-2 py-1 rounded bg-bear-berry/20 text-bear-fur text-xs">After Work</button>
         </div>
       )}
     </button>

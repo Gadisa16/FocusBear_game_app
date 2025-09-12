@@ -21,16 +21,16 @@ import { Bucket, Task } from '@/features/game/gameSlice'
 export function generateTasksFromGoal(goal: string): Task[] {
   // Lightweight placeholder "AI" generation for wireframe
   const base: Task[] = [
-    { id: 't1', text: `Break goal into 3 steps for: ${goal}`, correctBucket: 'Now' },
-    { id: 't2', text: `Schedule time for deep work on: ${goal}`, correctBucket: 'Later' },
-    { id: 't3', text: 'Check social media', correctBucket: 'Never' },
-    { id: 't4', text: `Gather materials/resources for: ${goal}`, correctBucket: 'Now' },
-    { id: 't5', text: 'Tidy your entire room', correctBucket: 'Never' },
-    { id: 't6', text: `Email mentor to review outcome of: ${goal}`, correctBucket: 'Later' },
-    { id: 't7', text: 'Change phone wallpaper', correctBucket: 'Never' },
+    { id: 't1', text: `List 3 micro steps for ${goal}`, correctBucket: 'Current Goal' },
+    { id: 't2', text: `Draft one opening line for ${goal}`, correctBucket: 'Current Goal' },
+    { id: 't3', text: 'Schedule focused work block', correctBucket: 'Next Task' },
+    { id: 't4', text: 'Gather 2 reference materials', correctBucket: 'Next Task' },
+    { id: 't5', text: 'Check Instagram feed', correctBucket: 'After Work' },
+    { id: 't6', text: 'Tidy random folders', correctBucket: 'After Work' },
+    { id: 't7', text: 'Browse unrelated news', correctBucket: 'After Work' },
   ]
   // Ensure IDs unique
   return base.map((t, i) => ({ ...t, id: `t${i+1}` }))
 }
 
-export const BUCKETS: Bucket[] = ['Now', 'Later', 'Never']
+export const BUCKETS: Bucket[] = ['Current Goal', 'Next Task', 'After Work']

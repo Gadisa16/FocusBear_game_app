@@ -3,7 +3,11 @@ import { generateTasksFromGoal, getScoreHistory, saveScore } from '@/utils/tasks
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { toast } from 'react-hot-toast';
 
-export type Bucket = 'Now' | 'Later' | 'Never'
+// Updated bucket taxonomy: 
+//  - "Current Goal": micro, immediately executable steps directly advancing the goal
+//  - "Next Task": supportive / preparatory or follow-on tasks related to the goal but not the immediate micro-step
+//  - "After Work": distractions / unrelated / procrastination items
+export type Bucket = 'Current Goal' | 'Next Task' | 'After Work'
 
 export interface Task {
   id: string
@@ -80,9 +84,9 @@ const gameSlice = createSlice({
       const correct = t.correctBucket === action.payload.bucket
       if (correct) {
         state.correctCount += 1
-        state.lastMessage = pick(['Great focus!', 'Honey sweet pick!', 'Bear-y good choice!', 'Nailed it!'])
+        state.lastMessage = pick(['Great focus!', 'Right on the goal!', 'Laser focus win!', 'Nailed it!'])
       } else {
-        state.lastMessage = pick(['Oops—honey trap!', 'Try again, cub!', 'Close! Think urgency + importance.'])
+        state.lastMessage = pick(['Not quite—stay on the goal!', 'Try again, cub!', 'Close! Refocus on the immediate step.'])
       }
       if (state.sortedCount >= state.tasks.length) {
         // Calculate score and save

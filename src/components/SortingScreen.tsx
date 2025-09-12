@@ -65,8 +65,8 @@ export default function SortingScreen() {
             <div className="flex items-center flex-wrap gap-2">
               <span>
                 {lastMessage || (showOnboarding
-                  ? 'Welcome! Drag sticky notes into buckets. Or, focus a note to reveal quick-send buttons.'
-                  : 'Tip: Now = urgent + important. Later = important. Never = distraction.')}
+                  ? 'Welcome! Drag sticky notes into buckets. Focus a note to reveal quick-send buttons.'
+                  : 'Tip: Current Goal = immediate micro-step. Next Task = related but not the micro-step. After Work = distraction.' )}
               </span>
               {showOnboarding && (
                 <button

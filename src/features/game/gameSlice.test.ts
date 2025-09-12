@@ -3,8 +3,8 @@ import { describe, expect, it } from 'vitest'
 
 function makeTasks(): Task[] {
   return [
-    { id: '1', text: 'A', correctBucket: 'Now' },
-    { id: '2', text: 'B', correctBucket: 'Later' },
+    { id: '1', text: 'A', correctBucket: 'Current Goal' },
+    { id: '2', text: 'B', correctBucket: 'Next Task' },
   ]
 }
 
@@ -13,11 +13,11 @@ describe('gameSlice', () => {
     const tasks = makeTasks()
     let state = reducer(undefined, { type: 'init' })
     state = reducer(state, setTasks(tasks))
-    state = reducer(state, dropTask({ id: '1', bucket: 'Now' }))
+  state = reducer(state, dropTask({ id: '1', bucket: 'Current Goal' }))
     expect(state.correctCount).toBe(1)
     expect(state.sortedCount).toBe(1)
     expect(state.screen).toBe('start')
-    state = reducer(state, dropTask({ id: '2', bucket: 'Later' }))
+  state = reducer(state, dropTask({ id: '2', bucket: 'Next Task' }))
     expect(state.screen).toBe('results')
   })
 
@@ -25,7 +25,7 @@ describe('gameSlice', () => {
     const tasks = makeTasks()
     let state = reducer(undefined, { type: 'init' })
     state = reducer(state, setTasks(tasks))
-    state = reducer(state, dropTask({ id: '1', bucket: 'Never' }))
+  state = reducer(state, dropTask({ id: '1', bucket: 'After Work' }))
     expect(state.correctCount).toBe(0)
     expect(state.sortedCount).toBe(1)
     expect(typeof state.lastMessage).toBe('string')
