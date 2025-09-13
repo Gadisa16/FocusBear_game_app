@@ -61,7 +61,8 @@ export default function SortingScreen() {
       <div className="grid gap-4 sm:gap-6">
         <div className="sr-only" aria-live="polite">{lastMessage || ''}</div>
         <div className="flex items-start justify-center gap-3">
-          <Bear size={56} mood={mood} />
+          {/* <Bear size={56} mood={mood} /> */}
+          <img src="./FocusBearLogo.svg" alt="bear" width={"64px"}/>
           <BearBubble>
             <div className="flex items-center flex-wrap gap-2">
               <span>
