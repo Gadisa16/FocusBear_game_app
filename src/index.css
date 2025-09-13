@@ -1,8 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
 /* Card drag and drop polish */
 .card-sticky {
+  @apply bg-yellow-100 shadow-sticky pt-2 pb-1 px-3 border border-yellow-200;
   position: relative;
-  transition: box-shadow 0.18s, transform 0.18s cubic-bezier(.4,2,.6,1);
+  transition: box-shadow 0.18s, transform 0.18s cubic-bezier(.4, 2, .6, 1);
 }
+
 .card-sticky:active {
   z-index: 30;
 }
@@ -36,23 +52,6 @@
   20%, 80% { transform: translateX(4px); }
   30%, 50%, 70% { transform: translateX(-8px); }
   40%, 60% { transform: translateX(8px); }
-}
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-:root {
-  color-scheme: light;
-}
-
-html, body, #root {
-  height: 100%;
-}
-
-/* Sticky note look */
-.card-sticky {
-  @apply bg-yellow-100 shadow-sticky pt-2 pb-1 px-3 border border-yellow-200;
-  position: relative;
 }
 
 /* Folded corner effect using pseudo-element */

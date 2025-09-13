@@ -19,8 +19,7 @@ export default function ScreenShell({ title, subtitle, mood = 'normal', children
   }
   return (
     <div className="min-h-full flex flex-col">
-      <header
-        className="p-4 flex items-center gap-3 justify-between bg-headerStyle">
+      <header className="p-4 flex items-center gap-3 justify-between bg-headerStyle">
         <div className="flex items-center gap-3">
             <button
             aria-label="Back to goal input"
@@ -29,19 +28,19 @@ export default function ScreenShell({ title, subtitle, mood = 'normal', children
             data-tooltip-id="app_logo_placeholder"
             data-tooltip-content="Back to start"
             >
-            <img src="/FocusBearLogo.svg" alt="FocusBear Logo" width={40} height={40} />
+            <img src="/FocusBearLogoWithText.svg" alt="FocusBear Logo" width="180px" className="min-w-[100px]" />
             <Tooltip id="app_logo_placeholder" place="right" />
             </button>
-          <div>
-            <h1 className="text-xl font-bold text-bear-fur">{title}</h1>
-            {subtitle && <p className="text-sm text-bear-furLight">{subtitle}</p>}
-          </div>
+        </div>
+        <div>
+          {/* <h1 className="text-xl font-bold text-bear-fur">{title}</h1> */}
+          {subtitle && <p className="leading-[16px] text-sm text-bear-furLight">{subtitle}</p>}
         </div>
         <div className="flex items-center gap-2">
           <button
             aria-label={soundEnabled ? 'Mute sounds' : 'Unmute sounds'}
             onClick={() => dispatch(toggleSound())}
-            className="px-3 py-2 rounded-lg border bg-white text-bear-fur hover:bg-bear-sky"
+            className="p-1 sm:px-3 sm:py-2 rounded-[4px] rounded-lg border bg-white text-bear-fur hover:bg-bear-sky"
             data-tooltip-id="sound-tooltip"
             data-tooltip-content="toggle sound!"
           >{soundEnabled ? '🔊' : '🔈'}
@@ -50,7 +49,7 @@ export default function ScreenShell({ title, subtitle, mood = 'normal', children
           <button
             aria-label="Settings"
             onClick={() => dispatch(goToScreen('settings'))}
-            className="px-3 py-2 rounded-lg border bg-white text-bear-fur hover:bg-bear-sky"
+            className="p-1 sm:px-3 sm:py-2 rounded-[4px] rounded-lg border bg-white text-bear-fur hover:bg-bear-sky"
             data-tooltip-id="settings-tooltip"
             data-tooltip-content="Sound & history"
           >⚙️

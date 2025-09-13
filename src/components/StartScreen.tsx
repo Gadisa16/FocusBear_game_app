@@ -24,7 +24,7 @@ export default function StartScreen() {
     <ScreenShell title="focus bear" subtitle="Sort tasks to train your focus">
       <div className="max-w-md mx-auto grid gap-6">
         <div className="flex items-center gap-3">
-          <Bear />
+          <img src="./FocusBearLogo.svg" alt="bear" width={"64px"}/>
           <div className="bear-bubble">What is your main goal today?</div>
         </div>
         <form
